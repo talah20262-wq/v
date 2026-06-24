@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة المدير - نظام المصنع</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Cairo,sans-serif;
+}
+
+body{
+background:#f5f6fa;
+}
+
+.sidebar{
+position:fixed;
+right:0;
+top:0;
+width:260px;
+height:100vh;
+background:#1e293b;
+color:#fff;
+padding:20px;
+overflow:auto;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+margin-bottom:30px;
+text-align:center;
+}
+
+.menu a{
+display:block;
+padding:12px;
+margin-bottom:8px;
+background:#334155;
+color:white;
+text-decoration:none;
+border-radius:8px;
+}
+
+.menu a:hover{
+background:#475569;
+}
+
+.main{
+margin-right:280px;
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.section{
+background:white;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+opacity:.9;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th,
+table td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+.approve{
+background:#16a34a;
+}
+
+.reject{
+background:#dc2626;
+}
+
+@media(max-width:768px){
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+}
+
+.main{
+margin-right:0;
+}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+🏭 نظام المصنع
+</div>
+
+<div class="menu">
+<a href="#dashboard">الرئيسية</a>
+<a href="#workers">العمال</a>
+<a href="#models">الموديلات</a>
+<a href="#distribution">توزيع الشغل</a>
+<a href="#production">الإنتاج</a>
+<a href="#reports">التقارير</a>
+<a href="#settings">الإعدادات</a>
+<a href="#" onclick="logout()">تسجيل الخروج</a>
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="cards">
+
+<div class="card">
+<h3>عدد العمال</h3>
+<h2 id="workersCount">0</h2>
+</div>
+
+<div class="card">
+<h3>عدد الموديلات</h3>
+<h2 id="modelsCount">0</h2>
+</div>
+
+<div class="card">
+<h3>إنتاج اليوم</h3>
+<h2 id="todayProduction">0</h2>
+</div>
+
+<div class="card">
+<h3>المتأخرين</h3>
+<h2 id="lateWorkers">0</h2>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>إضافة عامل جديد</h2>
+
+<input id="workerName" placeholder="اسم العامل">
+
+<input id="workerUser" placeholder="اسم المستخدم">
+
+<input id="workerPass" placeholder="كلمة المرور">
+
+<select id="workerDepartment">
+<option>الخياطة</option>
+<option>القص</option>
+<option>التشطيب</option>
+<option>التعبئة</option>
+</select>
+
+<button onclick="addWorker()">
+إضافة العامل
+</button>
+
+</div>
+
+<div class="section">
+
+<h2>العمال الجدد</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>الاسم</th>
+<th>القسم</th>
+<th>الحالة</th>
+<th>الإجراء</th>
+</tr>
+</thead>
+
+<tbody id="newWorkersTable">
+
+<tr>
+<td>محمد أحمد</td>
+<td>الخياطة</td>
+<td>بانتظار المراجعة</td>
+<td>
+<button class="approve">
+موافقة
+</button>
+
+<button class="reject">
+رفض
+</button>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>إضافة موديل</h2>
+
+<input id="modelName" placeholder="اسم الموديل">
+
+<input id="modelCode" placeholder="كود الموديل">
+
+<input id="modelPrice" placeholder="سعر القطعة">
+
+<textarea id="modelNotes"
+placeholder="ملاحظات"></textarea>
+
+<button onclick="addModel()">
+إضافة موديل
+</button>
+
+</div>
+
+<div class="section">
+
+<h2>توزيع الشغل</h2>
+
+<select id="assignWorker">
+<option>اختر العامل</option>
+</select>
+
+<select id="assignModel">
+<option>اختر الموديل</option>
+</select>
+
+<input id="assignQty"
+type="number"
+placeholder="العدد">
+
+<button onclick="assignWork()">
+توزيع
+</button>
+
+</div>
+
+<div class="section">
+
+<h2>متابعة الإنتاج</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>العامل</th>
+<th>الموديل</th>
+<th>المستلم</th>
+<th>المسلم</th>
+<th>المتبقي</th>
+</tr>
+</thead>
+
+<tbody id="productionTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>بحث عن عامل</h2>
+
+<input
+id="searchWorker"
+placeholder="اكتب اسم العامل">
+
+</div>
+
+</div>
+
+<script>
+
+function addWorker(){
+alert("سيتم الربط لاحقاً مع app.js");
+}
+
+function addModel(){
+alert("سيتم الربط لاحقاً مع app.js");
+}
+
+function assignWork(){
+alert("سيتم الربط لاحقاً مع app.js");
+}
+
+function logout(){
+
+localStorage.removeItem("currentUser");
+
+window.location.href="index.html";
+
+}
+
+</script>
+
+</body>
+</html>
