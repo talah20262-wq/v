@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام إدارة المصنع</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Cairo,sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+.login-box{
+width:400px;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.logo{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.note{
+margin-top:15px;
+font-size:13px;
+color:#777;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+<div class="logo">
+🏭 نظام المصنع
+</div>
+
+<input
+type="text"
+id="username"
+placeholder="اسم المستخدم">
+
+<input
+type="password"
+id="password"
+placeholder="كلمة المرور">
+
+<button onclick="login()">
+تسجيل الدخول
+</button>
+
+<div class="note">
+المدير والعامل يستخدمان نفس شاشة الدخول
+</div>
+
+</div>
+
+<script>
+
+/*
+حساب المدير الافتراضي
+
+username: admin
+password: 123456
+*/
+
+if(localStorage.getItem("currentUser")){
+
+let role =
+localStorage.getItem("currentRole");
+
+if(role==="admin"){
+window.location.href="admin.html";
+}
+else{
+window.location.href="worker.html";
+}
+
+}
+
+function login(){
+
+let username =
+document.getElementById("username").value;
+
+let password =
+document.getElementById("password").value;
+
+if(username==="admin" &&
+password==="123456"){
+
+localStorage.setItem(
+"currentUser",
+"admin"
+);
+
+localStorage.setItem(
+"currentRole",
+"admin"
+);
+
+window.location.href="admin.html";
+
+return;
+
+}
+
+let workers =
+JSON.parse(
+localStorage.getItem("workers")
+) || [];
+
+let worker =
+workers.find(w =>
+w.username===username &&
+w.password===password
+);
+
+if(worker){
+
+localStorage.setItem(
+"currentUser",
+worker.username
+);
+
+localStorage.setItem(
+"currentRole",
+"worker"
+);
+
+window.location.href="worker.html";
+
+}
+else{
+
+alert(
+"اسم المستخدم أو كلمة المرور غير صحيحة"
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
