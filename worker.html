@@ -1,1 +1,272 @@
+<!DOCTYPE html>
 
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>لوحة العامل</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Cairo,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+.header{
+background:#1e293b;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.container{
+padding:20px;
+}
+
+.profile{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+.profile img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:10px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.table-box{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th,
+table td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.logout{
+background:#dc2626;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>👷 لوحة العامل</h2>
+
+<button class="logout" onclick="logout()">
+تسجيل الخروج
+</button>
+
+</div>
+
+<div class="container">
+
+<div class="profile">
+
+<img
+src="https://via.placeholder.com/120"
+id="workerImage">
+
+<h2 id="workerName">
+اسم العامل
+</h2>
+
+<p id="workerDepartment">
+القسم
+</p>
+
+<p id="workerPhone">
+رقم الهاتف
+</p>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>إجمالي المستلم</h3>
+<h2 id="totalReceived">0</h2>
+</div>
+
+<div class="card">
+<h3>إجمالي المسلم</h3>
+<h2 id="totalDelivered">0</h2>
+</div>
+
+<div class="card">
+<h3>المتبقي</h3>
+<h2 id="totalRemaining">0</h2>
+</div>
+
+<div class="card">
+<h3>إجمالي الإنتاج</h3>
+<h2 id="totalProduction">0</h2>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<h2>الموديلات المسندة</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>الموديل</th>
+<th>الكود</th>
+<th>المستلم</th>
+<th>المسلم</th>
+<th>المتبقي</th>
+</tr>
+
+</thead>
+
+<tbody id="modelsTable">
+</tbody>
+
+</table>
+
+</div>
+
+<div class="table-box">
+
+<h2>استكمال البيانات</h2>
+
+<input
+type="file"
+accept="image/*"
+onchange="uploadProfileImage(event)">
+
+<input
+id="workerPhoneInput"
+placeholder="رقم الهاتف">
+
+<input
+id="workerAddressInput"
+placeholder="العنوان">
+
+<input
+id="workerNationalId"
+placeholder="الرقم القومي">
+
+<input
+type="date"
+id="workerBirthDate">
+
+<button onclick="saveWorkerProfile()">
+حفظ البيانات
+</button>
+
+</div>
+
+<div class="table-box">
+
+<h2>رفع البطاقة</h2>
+
+<input
+type="file"
+accept="image/*"
+id="cardImage"
+onchange="readCard(event)">
+
+<p id="ocrStatus">
+لم يتم رفع بطاقة
+</p>
+
+</div>
+
+<div class="table-box">
+
+<h2>تسجيل تسليم إنتاج</h2>
+
+<input
+type="text"
+id="deliveryModel"
+placeholder="اسم الموديل">
+
+<input
+type="number"
+id="deliveryQty"
+placeholder="عدد القطع المسلمة">
+
+<button onclick="saveDelivery()">
+تسجيل التسليم
+</button>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
