@@ -25,7 +25,7 @@ background:linear-gradient(135deg,#0f172a,#1e293b);
 
 .login-box{
 width:400px;
-background:white;
+background:#fff;
 padding:30px;
 border-radius:15px;
 box-shadow:0 10px 30px rgba(0,0,0,.2);
@@ -78,7 +78,7 @@ text-align:center;
 <div class="login-box">
 
 <div class="logo">
-🏭 نظام المصنع
+🏭 نظام إدارة المصنع
 </div>
 
 <input
@@ -103,12 +103,7 @@ placeholder="كلمة المرور">
 
 <script>
 
-/*
-حساب المدير الافتراضي
-
-username: admin
-password: 123456
-*/
+/* تحويل تلقائي إذا كان المستخدم مسجل */
 
 if(localStorage.getItem("currentUser")){
 
@@ -116,10 +111,15 @@ let role =
 localStorage.getItem("currentRole");
 
 if(role==="admin"){
-window.location.href="admin.html";
-}
-else{
-window.location.href="worker.html";
+
+window.location.href =
+"admin.html";
+
+}else{
+
+window.location.href =
+"worker.html";
+
 }
 
 }
@@ -127,13 +127,17 @@ window.location.href="worker.html";
 function login(){
 
 let username =
-document.getElementById("username").value;
+document.getElementById("username").value.trim();
 
 let password =
-document.getElementById("password").value;
+document.getElementById("password").value.trim();
 
-if(username==="admin" &&
-password==="123456"){
+/* المدير */
+
+if(
+username==="admin" &&
+password==="123456"
+){
 
 localStorage.setItem(
 "currentUser",
@@ -145,11 +149,14 @@ localStorage.setItem(
 "admin"
 );
 
-window.location.href="admin.html";
+window.location.href =
+"admin.html";
 
 return;
 
 }
+
+/* العامل */
 
 let workers =
 JSON.parse(
@@ -157,9 +164,14 @@ localStorage.getItem("workers")
 ) || [];
 
 let worker =
-workers.find(w =>
-w.username===username &&
-w.password===password
+workers.find(
+
+w =>
+
+w.username === username &&
+
+w.password === password
+
 );
 
 if(worker){
@@ -174,10 +186,10 @@ localStorage.setItem(
 "worker"
 );
 
-window.location.href="worker.html";
+window.location.href =
+"worker.html";
 
-}
-else{
+}else{
 
 alert(
 "اسم المستخدم أو كلمة المرور غير صحيحة"
@@ -187,7 +199,7 @@ alert(
 
 }
 
-</div>
+</script>
 
 <script src="app.js"></script>
 
